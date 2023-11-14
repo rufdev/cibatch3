@@ -10,7 +10,7 @@ $routes->get('/', 'Home::index');
 
 $routes->get('dashboard', 'DashboardController::index');
 
-$routes->resource('authors', ['controller' => 'AuthorController', 'except'=> ['new', 'edit']]);
+$routes->resource('authors', ['controller' => 'AuthorController', 'except'=> ['new', 'edit'], 'filter' => 'groupfilter:admin']);
 
 
 
