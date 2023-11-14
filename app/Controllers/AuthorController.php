@@ -62,15 +62,7 @@ class AuthorController extends ResourceController
 
     }
 
-    /**
-     * Return the editable properties of a resource object
-     *
-     * @return mixed
-     */
-    public function edit($id = null)
-    {
-        //
-    }
+    
 
     /**
      * Add or update a model resource, from "posted" properties
@@ -79,7 +71,28 @@ class AuthorController extends ResourceController
      */
     public function update($id = null)
     {
-        //
+        $author = new \App\Models\Author();
+        $data = $this->request->getJSON();
+        unset($data->id);
+
+        if (!$author->validate($data)){
+            $response = array(
+                'status' => 'error',
+                'error' => true,
+                'messages' => $author->errors()
+            );
+
+            return $this->response->setStatusCode(Response::HTTP_BAD_REQUEST)->setJSON($response);
+        }
+
+        $author->update($id,$data);
+        $response = array(
+            'status' => 'success',
+            'error' => false,
+            'messages' => 'Author updated successfully'
+        );
+
+        return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($response);
     }
 
     /**
@@ -89,6 +102,24 @@ class AuthorController extends ResourceController
      */
     public function delete($id = null)
     {
-        //
+        $author = new \App\Models\Author();
+
+        if ($author->delete($id)){
+            $response = array(
+                'status' => 'success',
+                'error' => false,
+                'messages' => 'Author deleted successfully'
+            );
+
+            return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($response);
+        }
+        
+        $response = array(
+            'status' => 'error',
+            'error' => true,
+            'messages' => 'Author not found'
+        );
+
+        return $this->response->setStatusCode(Response::HTTP_NOT_FOUND)->setJSON($response);
     }
 }
