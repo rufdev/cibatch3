@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
-
+use CodeIgniter\HTTP\Response;
 class AuthorController extends ResourceController
 {
     /**
@@ -43,7 +43,28 @@ class AuthorController extends ResourceController
      */
     public function create()
     {
-        //
+        $author = new \App\Models\Author();
+        $data = $this->request->getPost();
+
+        if (!$author->validate($data)){
+            $response = array(
+                'status' => 'error',
+                'error' => true,
+                'messages' => $author->errors()
+            );
+
+            return $this->response->setStatusCode(Response::HTTP_BAD_REQUEST)->setJSON($response);
+        }
+
+        $author->insert($data);
+        $response = array(
+            'status' => 'success',
+            'error' => false,
+            'messages' => 'Author added successfully'
+        );
+
+        return $this->response->setStatusCode(Response::HTTP_CREATED)->setJSON($response);
+
     }
 
     /**
