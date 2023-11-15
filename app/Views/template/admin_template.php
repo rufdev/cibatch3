@@ -27,5 +27,7 @@
 <!-- ./wrapper -->
 
 <?php include 'scripts.php' ?>
+
+<?= $this->renderSection('pagescript'); ?>
 </body>
 </html>
