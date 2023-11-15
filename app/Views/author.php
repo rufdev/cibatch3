@@ -13,27 +13,29 @@
 
 <section class="content">
     <div class="container-fluid">
-        <div class="row">
-            <table id="dataTable" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>AUTHOR ID</th>
-                        <th>FIRST NAME</th>
-                        <th>LAST NAME</th>
-                        <th>EMAIL</th>
-                        <th>BIRTH DATE</th>
-                        <th>ACTION</th>
-                    </tr>
-                </thead>
-            </table>
+        <div class="row mb-2">
+            <div class="col-md-12">
+                <table id="dataTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>AUTHOR ID</th>
+                            <th>FIRST NAME</th>
+                            <th>LAST NAME</th>
+                            <th>EMAIL</th>
+                            <th>BIRTH DATE</th>
+                            <th>ACTION</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
+
     </div>
 </section>
 <?= $this->endSection(); ?>
 
 <?= $this->section('pagescript'); ?>
 <script>
-
     let table = $("#dataTable").DataTable({
         responsive: true,
         processing: true,
@@ -42,12 +44,21 @@
             url: "<?= base_url('authors/list') ?>",
             type: "POST"
         },
-        columns:[
-            {data: "id"},
-            {data: "first_name"},
-            {data: "last_name"},
-            {data: "email"},
-            {data: "birthdate"},
+        columns: [{
+                data: "id"
+            },
+            {
+                data: "first_name"
+            },
+            {
+                data: "last_name"
+            },
+            {
+                data: "email"
+            },
+            {
+                data: "birthdate"
+            },
             {
                 data: "",
                 defaultContent: `<td>
@@ -58,13 +69,11 @@
         ],
         paging: true,
         lengthChange: true,
-        lengthMenu: [5, 10, 15,20, 50],
+        lengthMenu: [5, 10, 15, 20, 50],
         searching: true,
         ordering: true,
         info: true,
         autoWidth: true,
     });
-
-
 </script>
 <?= $this->endSection(); ?>
