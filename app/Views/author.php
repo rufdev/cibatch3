@@ -145,6 +145,7 @@
                                 delay: 3000
                             });
                             $('#modalID').modal('hide');
+                            clearform();
                             table.ajax.reload();
                         },
                         error: function(data) {
@@ -172,6 +173,7 @@
                                 delay: 3000
                             });
                             $('#modalID').modal('hide');
+                            clearform();
                             table.ajax.reload();
                         },
                         error: function(data) {
@@ -274,5 +276,45 @@
             }
         })
     });
+
+    $(document).on("click", "#deleteRow", function() {
+        let row = $(this).parents("tr")[0];
+        let id = table.row(row).data().id;
+
+        if(confirm("Are you sure you want to delete this record?")){
+            $.ajax({
+                url: "<?= base_url('authors') ?>/" + id,
+                type: "DELETE",
+                success: function(data) {
+                    $(document).Toasts('create', {
+                        class: 'bg-success',
+                        title: 'Success',
+                        body: data.messages,
+                        autohide: true,
+                        delay: 3000
+                    });
+                    table.ajax.reload();
+                },
+                error: function(data) {
+                    $(document).Toasts('create', {
+                        class: 'bg-danger',
+                        title: 'Error',
+                        body: "Record not deleted",
+                        autohide: true,
+                        delay: 3000
+                    });
+                }
+            })
+        }
+
+    });
+
+    function clearform(){
+        $('#id').val('');
+        $('#first_name').val('');
+        $('#last_name').val('');
+        $('#email').val('');
+        $('#birthdate').val('');
+    }
 </script>
 <?= $this->endSection(); ?>
