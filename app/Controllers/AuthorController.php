@@ -127,6 +127,7 @@ class AuthorController extends ResourceController
         $author = new \App\Models\Author();
         $data = $this->request->getJSON();
         unset($data->id);
+        unset($data->email);
 
         if (!$author->validate($data)){
             $response = array(

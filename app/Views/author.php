@@ -49,6 +49,7 @@
                         <div class="card card-primary">
                             <form class="needs-validation" novalidate>
                                 <div class="card-body">
+                                    <input type="hidden" id="id" name="id">
                                     <div class="form-group">
                                         <label for="first_name">First Name</label>
                                         <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter First Name" required>
@@ -128,32 +129,63 @@
 
             let jsondata = JSON.stringify(formdata);
 
-            if(this.checkValidity()){
-                $.ajax({
-                    url: "<?= base_url('authors') ?>",
-                    type: "POST",
-                    data: jsondata,
-                    success: function(data) {
-                        $(document).Toasts('create', {
-                            class: 'bg-success',
-                            title: 'Success',
-                            body: data.messages,
-                            autohide: true,
-                            delay: 3000
-                        });
-                        $('#modalID').modal('hide');
-                        table.ajax.reload();
-                    },
-                    error: function (data) {
-                        $(document).Toasts('create', {
-                            class: 'bg-danger',
-                            title: 'Error',
-                            body: "Record not added",
-                            autohide: true,
-                            delay: 3000
-                        });
-                    }
-                });
+            if (this.checkValidity()) {
+                if (!formdata.id) {
+                    //create
+                    $.ajax({
+                        url: "<?= base_url('authors') ?>",
+                        type: "POST",
+                        data: jsondata,
+                        success: function(data) {
+                            $(document).Toasts('create', {
+                                class: 'bg-success',
+                                title: 'Success',
+                                body: data.messages,
+                                autohide: true,
+                                delay: 3000
+                            });
+                            $('#modalID').modal('hide');
+                            table.ajax.reload();
+                        },
+                        error: function(data) {
+                            $(document).Toasts('create', {
+                                class: 'bg-danger',
+                                title: 'Error',
+                                body: "Record not added",
+                                autohide: true,
+                                delay: 3000
+                            });
+                        }
+                    });
+                } else {
+                    //update
+                    $.ajax({
+                        url: "<?= base_url('authors') ?>/" + formdata.id,
+                        type: "PUT",
+                        data: jsondata,
+                        success: function(data) {
+                            $(document).Toasts('create', {
+                                class: 'bg-success',
+                                title: 'Success',
+                                body: data.messages,
+                                autohide: true,
+                                delay: 3000
+                            });
+                            $('#modalID').modal('hide');
+                            table.ajax.reload();
+                        },
+                        error: function(data) {
+                            $(document).Toasts('create', {
+                                class: 'bg-danger',
+                                title: 'Error',
+                                body: "Record not added",
+                                autohide: true,
+                                delay: 3000
+                            });
+                        }
+                    });
+                }
+
             }
 
 
@@ -202,8 +234,8 @@
             {
                 data: "",
                 defaultContent: `<td>
-                <button class="btn btn-sm btn-warning btn-edit">Edit</button>
-                <button class="btn btn-sm btn-danger btn-delete">Delete</button>
+                <button class="btn btn-sm btn-warning btn-edit" id="editRow">Edit</button>
+                <button class="btn btn-sm btn-danger btn-delete" id="deleteRow">Delete</button>
                 </td>`
             }
         ],
@@ -214,6 +246,33 @@
         ordering: true,
         info: true,
         autoWidth: true,
+    });
+
+    $(document).on("click", "#editRow", function() {
+        let row = $(this).parents("tr")[0];
+        let id = table.row(row).data().id;
+
+        $.ajax({
+            url: "<?= base_url('authors') ?>/" + id,
+            type: "GET",
+            success: function(data) {
+                $('#modalID').modal('show');
+                $('#id').val(data.id);
+                $('#first_name').val(data.first_name);
+                $('#last_name').val(data.last_name);
+                $('#email').val(data.email);
+                $('#birthdate').val(data.birthdate);
+            },
+            error: function(data) {
+                $(document).Toasts('create', {
+                    class: 'bg-danger',
+                    title: 'Error',
+                    body: "Record not found",
+                    autohide: true,
+                    delay: 3000
+                });
+            }
+        })
     });
 </script>
 <?= $this->endSection(); ?>
