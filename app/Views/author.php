@@ -47,58 +47,80 @@
                     </div>
                     <div class="modal-body">
                         <div class="card card-primary">
-                            <div class="card-header">
-                                <h3 class="card-title">Quick Example</h3>
-                            </div>
-                            <!-- /.card-header -->
-                            <!-- form start -->
-                            <form>
+                            <form class="needs-validation" novalidate>
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Email address</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                                        <label for="first_name">First Name</label>
+                                        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter First Name" required>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter a valid first name
+                                        </div>
                                     </div>
+
                                     <div class="form-group">
-                                        <label for="exampleInputPassword1">Password</label>
-                                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                        <label for="last_name">Last Name</label>
+                                        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Enter Last Name" required>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter a valid last name
+                                        </div>
                                     </div>
+
                                     <div class="form-group">
-                                        <label for="exampleInputFile">File input</label>
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="exampleInputFile">
-                                                <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                                            </div>
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">Upload</span>
+                                        <label for="email">Email Name</label>
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email" required>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter a valid email name
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="birthdate">Birth Date</label>
+                                        <div class="input-group date" id="birthdatedatepicker" data-target-input="nearest">
+                                            <input type="text" class="form-control datetimepicker-input" data-target="#birthdatedatepicker"
+                                            id="birthdate" name="birthdate" placeholder="Enter Birth Date" required
+                                            >
+                                            <div class="input-group-append" data-target="#birthdatedatepicker" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                                    </div>
                                 </div>
-                                <!-- /.card-body -->
-
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                </div>
-                            </form>
                         </div>
-                    </div>
+                        <!-- /.card-body -->
 
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                        </form>
+                    </div>
                 </div>
-                <!-- /.modal-content -->
+
             </div>
-            <!-- /.modal-dialog -->
+            <!-- /.modal-content -->
         </div>
+        <!-- /.modal-dialog -->
+    </div>
     </div>
 </section>
 <?= $this->endSection(); ?>
 
 <?= $this->section('pagescript'); ?>
 <script>
+    $(function(){
+        $("#birthdatedatepicker").datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+    });
+
     let table = $("#dataTable").DataTable({
         responsive: true,
         processing: true,
