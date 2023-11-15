@@ -85,9 +85,7 @@
                                     <div class="form-group">
                                         <label for="birthdate">Birth Date</label>
                                         <div class="input-group date" id="birthdatedatepicker" data-target-input="nearest">
-                                            <input type="text" class="form-control datetimepicker-input" data-target="#birthdatedatepicker"
-                                            id="birthdate" name="birthdate" placeholder="Enter Birth Date" required
-                                            >
+                                            <input type="text" class="form-control datetimepicker-input" data-target="#birthdatedatepicker" id="birthdate" name="birthdate" placeholder="Enter Birth Date" required>
                                             <div class="input-group-append" data-target="#birthdatedatepicker" data-toggle="datetimepicker">
                                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                             </div>
@@ -115,9 +113,57 @@
 
 <?= $this->section('pagescript'); ?>
 <script>
-    $(function(){
+    $(function() {
         $("#birthdatedatepicker").datetimepicker({
             format: 'YYYY-MM-DD'
+        });
+
+        $('form').submit(function(e) {
+            e.preventDefault();
+
+            let formdata = $(this).serializeArray().reduce(function(obj, item) {
+                obj[item.name] = item.value;
+                return obj;
+            }, {});
+
+            let jsondata = JSON.stringify(formdata);
+
+            if(this.checkValidity()){
+                $.ajax({
+                    url: "<?= base_url('authors') ?>",
+                    type: "POST",
+                    data: jsondata,
+                    success: function(data) {
+                        $(document).Toasts('create', {
+                            class: 'bg-success',
+                            title: 'Success',
+                            body: data.messages,
+                            autohide: true,
+                            delay: 3000
+                        });
+                        $('#modalID').modal('hide');
+                        table.ajax.reload();
+                    }
+                });
+            }
+
+
+        });
+    });
+
+    $(document).ready(function() {
+        'use strict';
+
+        let form = $(".needs-validation");
+
+        form.each(function() {
+            $(this).on('submit', function(e) {
+                if (this.checkValidity() === false) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                $(this).addClass('was-validated');
+            });
         });
     });
 
