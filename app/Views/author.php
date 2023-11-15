@@ -143,6 +143,15 @@
                         });
                         $('#modalID').modal('hide');
                         table.ajax.reload();
+                    },
+                    error: function (data) {
+                        $(document).Toasts('create', {
+                            class: 'bg-danger',
+                            title: 'Error',
+                            body: "Record not added",
+                            autohide: true,
+                            delay: 3000
+                        });
                     }
                 });
             }
